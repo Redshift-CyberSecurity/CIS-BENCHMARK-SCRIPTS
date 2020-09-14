@@ -57,8 +57,9 @@ while IFS= read -r -s -n1 pass; do
 done
 
 echo "PostgreSQL User used is: $username" >> $REPORT
-echo "localhost:5432:*:$username:$pass" > $POSTGRESQL_DEFAULTS_EXTRA_FILE
+echo "localhost:5432:*:$username:$password" > $POSTGRESQL_DEFAULTS_EXTRA_FILE
 chmod 0600 $POSTGRESQL_DEFAULTS_EXTRA_FILE
+export PGPASSFILE=$POSTGRESQL_DEFAULTS_EXTRA_FILE
 
 echo -e "\r\n--> Section 1 Installation and Patches" >> $REPORT
 echo -e "\r\n----> 1.1 Ensure packages are obtained from authorized repositories" >> $REPORT
@@ -1450,7 +1451,7 @@ echo -e "\r\n----> 4.3 Ensure excessive function privileges are revoked" >> $REP
 
 #Audit:
 su -c whoami postgres >> $REPORT
-psql -w -h localhost -U $username -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig ROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;" >> $REPORT
+psql -w -h localhost -U $username -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;" >> $REPORT
 
 #In the query results, a prosecdef value of ' t ' on a row indicates that that function uses
 #privilege elevation.
@@ -2439,25 +2440,3 @@ fi
 echo "please compress the /tmp/redshift directory and send it to your consultant"
 echo "########### Redshift CIS CIS PostgreSQL 12 end :D ###########" >> $REPORT
 exit
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
