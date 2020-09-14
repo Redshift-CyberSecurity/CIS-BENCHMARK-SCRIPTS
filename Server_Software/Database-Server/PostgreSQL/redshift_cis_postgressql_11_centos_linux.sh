@@ -1449,7 +1449,7 @@ echo -e "\r\n----> 4.3 Ensure excessive function privileges are revoked" >> $REP
 
 #Audit:
 su -c whoami postgres >> $REPORT
-psql -w -h localhost -U $username -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig ROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;" >> $REPORT
+psql -w -h localhost -U $username -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;" >> $REPORT
 
 #In the query results, a prosecdef value of ' t ' on a row indicates that that function uses
 #privilege elevation.
