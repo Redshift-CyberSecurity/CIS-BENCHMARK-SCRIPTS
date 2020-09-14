@@ -1298,7 +1298,7 @@ echo -e "\r\n----> 3.2 Ensure the PostgreSQL Audit Extension (pgAudit) is enable
 #Audit:
 psql -w -h localhost -U $username -c "show shared_preload_libraries;" >> $REPORT
 
-echo -e "\r\n--> 4 User Access and Authorization" >> $REPORT
+echo -e "\r\n-->Section 4 User Access and Authorization" >> $REPORT
 
 echo -e "\r\n----> 4.1 Ensure sudo is configured correctly" >> $REPORT
 
@@ -1449,7 +1449,7 @@ echo -e "\r\n----> 4.3 Ensure excessive function privileges are revoked" >> $REP
 
 #Audit:
 su -c whoami postgres >> $REPORT
-psql -w -h localhost -U $username -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;" >> $REPORT
+psql -w -h localhost -U $username -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig ROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;" >> $REPORT
 
 #In the query results, a prosecdef value of ' t ' on a row indicates that that function uses
 #privilege elevation.
@@ -1626,7 +1626,7 @@ echo -e "\r\n----> 4.8 Make use of default roles" >> $REPORT
 su -c whoami postgres >> $REPORT
 psql -w -h localhost -U $username -c "select rolname from pg_roles where rolsuper is true;" >> $REPORT
 
-echo -e "\r\n--> 5 Connection and Login" >> $REPORT
+echo -e "\r\n-->Section 5 Connection and Login" >> $REPORT
 
 echo -e "\r\n----> 5.1 Ensure login via 'local' UNIX Domain Socket is configured correctly" >> $REPORT
 
@@ -1696,7 +1696,7 @@ echo -e "\r\n----> 5.2 Ensure login via 'host' TCP/IP Socket is configured corre
 #Audit:
 echo -e "\r\nRequires manual verification" >> $REPORT
 
-echo -e "\r\n--> 6 PostgreSQL Settings" >> $REPORT
+echo -e "\r\n-->Section 6 PostgreSQL Settings" >> $REPORT
 
 echo -e "\r\n----> 6.1 Ensure 'Attack Vectors' Runtime Parameters are Configured" >> $REPORT
 
@@ -2102,6 +2102,8 @@ echo -e "\r\n----> 6.9 Ensure the pgcrypto extension is installed and configured
 #Audit:
 psql -w -h localhost -U $username -c "SELECT * FROM pg_available_extensions WHERE name='pgcrypto';" >> $REPORT
 
+echo -e "\r\n-->Section 7 Replication" >> $REPORT
+
 echo -e "\r\n----> 7.1 Ensure a replication-only user is created and used for streaming
 replication" >> $REPORT
 
@@ -2213,7 +2215,7 @@ psql -w -h localhost -U $username -c "select rolname from pg_roles where rolrepl
 #that SSL communications are possible:
 su -c whoami postgres >> $REPORT
 
-echo -e "\r\n--> 8 Special Configuration Considerations" >> $REPORT
+echo -e "\r\n-->Section 8 Special Configuration Considerations" >> $REPORT
 
 echo -e "\r\n----> 8.1 Ensure PostgreSQL configuration files are outside the data cluster" >> $REPORT
 
@@ -2397,27 +2399,5 @@ fi
 echo "please compress the /tmp/redshift directory and send it to your consultant"
 echo "########### Redshift CIS CIS PostgreSQL 11 end :D ###########" >> $REPORT
 exit
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
